@@ -24,4 +24,20 @@ At each point in the for loop, the algorithm cehcks if the `y` is in the hashtab
 
 ## Solution 2
 
-To enhance efficiency, the algorithm performs an initial check to compare the lengths of the array and the sequence. If the array is shorter than the sequence, it immediately returns `False`, avoiding unnecessary computations.
+1. Sort the array in ascending order
+2. Create two pointers at both ends of the array
+3. check the sum of two pointers
+4. madjust ove pointers accordingly while match is not found
+5. if match is not in array return empty array
+
+Create a for loop that will iterate through the array and check if the sum of the two numbers is equal to the target sum. If it is, return `True`. <br/>
+
+If it is false then there are `2` more conditions to check:
+
+```
+currentSum = array[left] + array[right]
+if currentSum > targetSum: move right pointer down
+if currentSum < targetSum: move left pointer up
+```
+
+Finally, if the pointers cross, then we have checked ebveruy value in the array amd there is no match. Hence, we return an empty array

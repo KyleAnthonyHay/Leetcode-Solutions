@@ -1,6 +1,6 @@
 # Leetcode-Solutions 💻
 
-My personal bank of Leetcode-Style Problems from [AlgoExpert.io](algoexpert.io)
+My personal bank of Leetcode-Style Problems from [AlgoExpert.io](https://www.algoexpert.io)
 
 ## How to use 🛠️
 
