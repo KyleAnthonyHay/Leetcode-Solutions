@@ -26,9 +26,9 @@ At each point in the for loop, the algorithm cehcks if the `y` is in the hashtab
 
 1. Sort the array in ascending order
 2. Create two pointers at both ends of the array
-3. check the sum of two pointers
-4. madjust ove pointers accordingly while match is not found
-5. if match is not in array return empty array
+3. Check the sum of two pointers
+4. Adjust ove pointers accordingly while match is not found
+5. If match is not in array return empty array
 
 Create a for loop that will iterate through the array and check if the sum of the two numbers is equal to the target sum. If it is, return `True`. <br/>
 
@@ -40,4 +40,4 @@ if currentSum > targetSum: move right pointer down
 if currentSum < targetSum: move left pointer up
 ```
 
-Finally, if the pointers cross, then we have checked ebveruy value in the array amd there is no match. Hence, we return an empty array
+Finally, if the pointers cross, then we know we have checked every value in the array and there is no match. Hence, we return an empty array.
