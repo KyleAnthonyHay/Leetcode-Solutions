@@ -11,7 +11,7 @@ def twoNumberSum(array, targetSum):
 
     return []
 
-# Solution 1 Time Complexity: O(n^2) WORST? Space Complexity: O(1)
+# Solution 1 Time Complexity: O(nlogn) WORST? Space Complexity: O(1)
 
 
 def twoNumberSum(array, targetSum):
