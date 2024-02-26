@@ -6,36 +6,40 @@
 
 ## Solution 1 (Recursive)
 
-**Time: O(logn) Average Case | O(n) Worst Case** <br/>
-**Space: O(logn)** <br/>
+**Time: O(n)** <br/>
+**Space: O(n)** <br/>
 
 1. Create Helper function:
 
 ```py
-findClosestValueInBstHelper(tree, target, float("inf"))
+branchSumsHelper(root, 0, sums)
 ```
 
-2. Crease a **base case** for the recursive call:
+2. Crease a **base case** for the recursive call: if the algorithm reaches a leaf node
 
 ```py
-if tree is None:  # Base Case
-        return closest
+if node.left is None and node.right is None:
 ```
 
-The algorithm comapres the absolute differnece of the `target` and the `current node`. It assigns the closer one to variable `closest` and calls the function again on the left or right subtree dpeending on if the target is larger or smaller than the current node value. <br/>
+3. Crease a another **base case** for Nodes with `one child`:
 
 ```py
-if target > tree.value:
-        return findClosestValueInBstHelper(tree.right, target, closest)
-    elif target < tree.value:
-        return findClosestValueInBstHelper(tree.left, target, closest)
-    else:
-        return closest
+if node is None:
+        return
 ```
 
-Also, if the value is equal then we end the recursion, because we found an equal node.
+The algorithm starts at the root node and adds its value to an accumilating sum(`branchSum`). It then checks at each node if it is a leaf. If TRUE, it appends the accumilated sum to the list and returns.(`sums.append(branchSum)`) <br/>
+
+It Iterates through the tree like so:
+
+```py
+branchSumsHelper(node.left, branchSum, sums)
+branchSumsHelper(node.right, branchSum, sums)
+```
 
 ### Note
+
+<br/>
 
 Binary Tree Class was given:
 
@@ -46,26 +50,4 @@ class BST:
         self.value = value
         self.left = None
         self.right = None
-```
-
-## Optimal Solution 2 (Iterative)
-
-**Time: O(logn) Average Case | O(n) Worst Case** <br/>
-**Space: O(1)** <br/>
-
-1. Create `while loop` to end at the leaf of the tree
-
-```py
-while currentNode is not None:
-```
-
-note: Similar logic to `Solution 1` but instead of recursive valls, we traverse through the tree.
-
-```py
-if target > currentNode.value:
-            currentNode = currentNode.right
-        elif target < currentNode.value:
-            currentNode = currentNode.left
-        else:
-            return closest
 ```

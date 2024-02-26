@@ -1,6 +1,6 @@
 # Optimal Solution
-# Time: O(logn) Number of nodes(O(n) worst case)
-# Space: O(logn) Frames on the call stack(for the recursive calls)
+# Time: O(n)
+# Space: O(n)
 
 # This is the class of the input root. Do not edit it.
 class BinaryTree:
