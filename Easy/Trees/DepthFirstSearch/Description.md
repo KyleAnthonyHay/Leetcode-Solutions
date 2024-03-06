@@ -17,13 +17,13 @@ array.append(self.name)
 
 The algorithm then iterates through every child on that currently visited node. `"for child in self.children:"` On each child node, it calls the same DFS algorithm on that node. This results in a recursive call on a nodes `child`, then the `grandchild`, then the `greatgrandchild` and so on.<br>
 
-This results in a DFS. Alos keep in mind that the base case is:
+This results in a DFS. Also, keep in mind that the base case is:
 
 ```py
 for child in self.children:
 ```
 
-if the child has no children the the for loop is not excecuted.
+if the child node has no children the the for loop is not excecuted.
 
 ### Note
 
