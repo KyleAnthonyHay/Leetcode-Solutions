@@ -9,40 +9,31 @@
 **Time: O(v + e)** <br/>
 **Space: O(v) Array has every vertex in the tree + call stack = 2v** <br/>
 
-1. Create a helper function(optional):
+1. Append the currently visited node's letter to Array:
 
 ```py
-nodeDepthHelper(root, sums = 0)
+array.append(self.name)
 ```
 
-The `sums = 0` sets a default value for sums. Removing this would cause the algorithm to fail(it would still compile). Placing `sums = 0` or just putting `0` as the second parameter would suffice.
+The algorithm then iterates through every child on that currently visited node. `"for child in self.children:"` On each child node, it calls the same DFS algorithm on that node. This results in a recursive call on a nodes `child`, then the `grandchild`, then the `greatgrandchild` and so on.<br>
 
-2. Create base case:
+This results in a DFS. Alos keep in mind that the base case is:
 
 ```py
-if root is None:
-        return 0
+for child in self.children:
 ```
 
-this ensures that the algorithm doesn't crash when it reaches a leaf node.
-
-3. Return the sum of the current node's value and the sum of the left and right subtrees:
-
-```py
-return sums + nodeDepthHelper(root.left, sums + 1) + nodeDepthHelper(root.right, sums + 1)
-```
-
-`sums` is the depth of the current node. The `first` and `second` recursive calls return the accumilated depth of the left subtree and the righrt respectively. <br/>
+if the child has no children the the for loop is not excecuted.
 
 ### Note
 
-This works with a node of 1 value or 2 or 3 because of teh base case. <br/>
-
 ```py
-# This is the class of the input tree. Do not edit.
-class BST:
-    def __init__(self, value):
-        self.value = value
-        self.left = None
-        self.right = None
+# These methods were given
+def __init__(self, name):
+        self.children = []
+        self.name = name
+
+def addChild(self, name):
+        self.children.append(Node(name))
+        return self
 ```
