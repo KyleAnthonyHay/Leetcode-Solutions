@@ -9,7 +9,7 @@
 **Time: O(n) Iterating Through List** <br/>
 **Space: O(1)** <br/>
 
-1. Create two pointers, **fast** and **slow**.
+1. Create two pointers, **fast** and **slow**. These will be used to find the middle node.
 
 ```py
 slow = linkedList
