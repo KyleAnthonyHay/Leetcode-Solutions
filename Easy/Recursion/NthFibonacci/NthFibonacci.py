@@ -8,6 +8,7 @@ def getNthFib(n):
         return 1
     else:
         return getNthFib(n-1) + getNthFib(n-2)
+
 # Better Recursive Solution O(n) Time | O(n) Space
 
 
@@ -31,5 +32,4 @@ def getNthFib(n):
         temp = a
         a = b
         b += temp
-
     return a
