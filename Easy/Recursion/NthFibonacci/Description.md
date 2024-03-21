@@ -4,7 +4,7 @@
 
 ![description](./desc.png)
 
-## Solution 1
+## Solution 1 (Non-Optimal)
 
 ```py
 def getNthFib(n):
@@ -19,7 +19,7 @@ def getNthFib(n):
 **Time: O(2^n) Two Recursive Calls Per Call Stack Layer** <br/>
 **Space: O(n) Variables** <br/>
 
-1. Take care of the base case for the first two Fib Numbers `F(1) = 0` & `F(2) = 1`. This is essential for recursion because it tells the function when to stop calling itself and start returning values back up the chain.
+1. Take care of the base case for the first two Fib Numbers `F(1) = 0` & `F(2) = 1`. This is essential for recursion because it tells the function when to stop calling itself and start returning values up the chain.
 
 ```py
 if n == 1:
