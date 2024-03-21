@@ -27,7 +27,6 @@ def getNthFib(n):
     # Base Case Values
     a = 0
     b = 1
-
     for _ in range(n-1):
         temp = a
         a = b
