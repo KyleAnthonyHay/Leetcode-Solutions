@@ -11,10 +11,8 @@ class BinaryTree:
 
 
 def branchSums(root):
-    # Write your code here.
     sums = []
     branchSumsHelper(root, 0, sums)
-
     return sums
 
 
