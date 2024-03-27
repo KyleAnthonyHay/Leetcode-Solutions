@@ -6,6 +6,19 @@
 
 ## Solution 1
 
+```py
+def nonConstructibleChange(coins):
+    coins.sort()
+    change = 0
+
+    for coin in coins:
+        if coin > change + 1:
+            break
+        change += coin
+
+    return change + 1
+```
+
 **Time Complexity:** O(nlogn)  
 **Space Complexity:** O(1) <br/>
 First, after sorting the list, we iterate through each element. For every new coin we add to the total, there is a formula to consider: <br/>
