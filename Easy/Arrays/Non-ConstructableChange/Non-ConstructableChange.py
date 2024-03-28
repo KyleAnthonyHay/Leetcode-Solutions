@@ -1,6 +1,6 @@
 # Optimal Solution
 
-def nonConstructibleChange(coins):
+def NonConstructibleChange(coins):
     coins.sort()
     change = 0
 
