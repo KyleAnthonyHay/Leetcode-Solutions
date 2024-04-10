@@ -4,8 +4,8 @@ class MinHeap:
     def __init__(self, array):
         # Do not edit the line below.
         self.heap = self.buildHeap(array)
-    # O(n) Time |  O(1) Space
 
+    # O(n) Time |  O(1) Space
     def buildHeap(self, array):
         firstParentIdx = (len(array) - 2) // 2
         for currentIdx in reversed(range(firstParentIdx + 1)):
@@ -46,8 +46,8 @@ class MinHeap:
         valueToRemove = self.heap.pop()
         self.siftDown(0, len(self.heap) - 1, self.heap)
         return valueToRemove
-    # O(logn) time | O(1) Space
 
+    # O(logn) time | O(1) Space
     def insert(self, value):
         self.heap.append(value)
         self.siftUp(len(self.heap) - 1, self.heap)
