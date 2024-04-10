@@ -13,7 +13,7 @@ class MinHeap:
         return array
 
     # O(logn) time | O(1) Space
-    def siftDown(self,  currentIdx, endIdx, heap):
+    def siftDown(self, currentIdx, endIdx, heap):
         leftIdx = currentIdx * 2 + 1
         while leftIdx <= endIdx:
             rightIdx = currentIdx * 2 + 2 if currentIdx * 2 + 2 <= endIdx else -1
@@ -30,7 +30,7 @@ class MinHeap:
                 break
 
     # O(logn) time | O(1) Space
-    def siftUp(self,  currentIdx, heap):
+    def siftUp(self, currentIdx, heap):
         parentIdx = (currentIdx - 1) // 2
         while currentIdx > 0 and heap[currentIdx] < heap[parentIdx]:
             self.swap(currentIdx, parentIdx, heap)
