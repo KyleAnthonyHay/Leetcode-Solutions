@@ -6,140 +6,197 @@
 
 ## Solution
 
-There are **7 functions** to write in order to complete this problem. We will go over them one at a time and draw a conclusion summarizing our combined algorithms.
+There are **4 functions** to write in order to complete this problem. We will go over them one at a time and draw a conclusion summarizing our combined algorithms. Ensure you have a solid understanding of how `BST`'s work.
 
-### 1. swap()
+**Time: O(logn)** <br/>
+**Space: O(1)** <br/>
+
+### 1. getMinValue()
 
 ```py
-def swap(self, i, j, heap):
-    heap[i], heap[j] = heap[j], heap[i]
+def getMinValue(self):
+    currentNode = self
+    while currentNode.left is not None:
+        currentNode = currentNode.left
+    return currentNode.value
 ```
 
-This is a "Quality of Life" function that swaps the values of the two given indices `i` and `j` in the `heap`. You will see this being used in the code.
+`self` - enables the use of class attributes <br>
 
-### 2. peek()
+This is a "Quality of Life" function that finds the minimum value in respect to the node it is currently at. In a `BST` it is understood that the left most node is the smallest Node in that tree/subtree. <br>
 
-```py
-def peek(self):
-    return self.heap[0]
-```
+So, while currenNode has a left child, we keep traversing left. Once we hit a leaf node (left is None), we return its value since it is guaranteed to be the smallest.
 
-The peek function simply returns the root element (first element) of the heap array. This would be the first index. Keep in mind that since this is a **Min-Heap**, the root will always be the smallest value.
-
-### 3. siftUp()
+### 1. contains()
 
 ```py
-# O(logn) time | O(1) Space
-def siftUp(self,  currentIdx, heap):
-    parentIdx = (currentIdx - 1) // 2
-    while currentIdx > 0 and heap[currentIdx] < heap[parentIdx]:
-        self.swap(currentIdx, parentIdx, heap)
-        currentIdx = parentIdx
-        parentIdx = (currentIdx - 1) // 2
-```
+def contains(self, value):
+    currentNode = self
 
-`self` - to enable access to class instance functions and variables <br>
-`currentIdx` - initially the last leaf node and represents the currently viewed node <br>
-`heap` - the heap array we will be sifting up <br>
-
-This function is used when inserting values in the heep. It starts by appending the new value as the last **leave node**, and shifts the value up a layer if that current value is smaller than its parent. We can calculate the parent node using the equation: `(currentIdx - 1) // 2`. The **while loop** continues until the `currentIdx` reaches the root node(0) or if the `currentIdx`'s value is _larger_ than its **parent** (in this case we wouldnt need to swap since it is now in the correct position). <br>
-
-Remember, in a **Min-heap**, the parent is always smaller than the children.
-
-### 4. siftDown()
-
-```py
-# O(logn) time | O(1) Space
-def siftDown(self, currentIdx, endIdx, heap):
-    leftIdx = currentIdx * 2 + 1
-    while leftIdx <= endIdx:
-        rightIdx = currentIdx * 2 + 2 if currentIdx * 2 + 2 <= endIdx else -1
-        if rightIdx != -1 and heap[rightIdx] < heap[leftIdx]:
-            idxToSwap = rightIdx
+    while currentNode is not None:
+        if value < currentNode.value:
+            currentNode = currentNode.left
+        elif value > currentNode.value:
+            currentNode = currentNode.right
         else:
-            idxToSwap = leftIdx
-
-        if heap[idxToSwap] < heap[currentIdx]:
-            self.swap(currentIdx, idxToSwap, heap)
-            currentIdx = idxToSwap
-            leftIdx = currentIdx * 2 + 1
-        else:
-            break
+            return True
+    return False
 ```
 
-`self` - to enable access to class instance functions and variables <br>
-`currentIdx` - initially the **root** node and represents the currently viewed node <br>
-`endIdx` - the last index in the array | the last leaf node<br>
-`heap` - the heap array <br>
+`self` - enables the use of class attributes <br>
+`value` - the value we are searching for <br>
 
-This function is used to remove items from the heap. It starts by swapping the first and last value in the heap(the **root/first index** and **last leaf/last index**) and popping the swapped root value. Then it takes the swapped leaf value and shifts the value down layer by layer given this condition: <br>
+The **While loop** will go until we have reached a leaf node. It traverses left or right depending on of the target `value` is larger or smaller than the current nodes value. If we find a match, we return **True**. If we reach a `leaf`(currentNode = None) and no match, we return **False**.
 
-```py
-# if the current node's value is larger than smallest of its two children.
-```
-
-Keep in mind however, Removing an item from teh heap is a separeate function and only the _logic_ of "sifting Down" will be implemented in this function. <br>
-
-We can calculate the left and right children using the equations: `leftIdx = currentIdx * 2 + 1` and `rightIdx = currentIdx * 2 + 2`. <br>
-
-Inside the loop, we apply our formula to find the rightIdx and assign it to the variable `rightIdx` only if it doest surpass the last index in the heap(endIdx). The **while loop** continues until the `leftIdx` is greater than the `endIdx` (goes past the last leaf/index). <br>
-
-If `leftIdx` hasn't surpassed the `endIdx`, and the `leftIdx` is the smaller of the two, then `leftIdx` is identified as the index that needs to be swapped(`idxToSwap`) with the currentIdx. Otherwise `rightIdx` is assigned to `idxToSwap`. Finally we check if the currentIdx is larger than the `idxToSwap`, and if so swap them and update the indexes for the next iteration. If not, we break out of the loop since it is already in the correct position.
-
-### 5. Remove()
+### 1. insert()
 
 ```py
-# O(logn) time | O(1) Space
-def remove(self):
-    self.swap(0, len(self.heap) - 1, self.heap)
-    valueToRemove = self.heap.pop()
-    self.siftDown(0, len(self.heap) - 1, self.heap)
-    return valueToRemove
-```
-
-When removing a value from a `heap`, the _root node_ is removed and swapped with the _last element_. In our case: the value at the last index(len(self.heap) - 1) will be swapped with the first(0), then we "pop" the last value. However, now we have the last value in the root node, whcih is obvously not the minimum value(since the deeper you go in a min-heap is the larger the number is). <br>
-
-So after popping the last value, we call the siftdown function on the root node. Then we return the value we removed(`valueToRemove`).
-
-### 6. insert()
-
-```py
-# O(logn) time | O(1) Space
 def insert(self, value):
-    self.heap.append(value)
-    self.siftUp(len(self.heap) - 1, self.heap)
+    currentNode = self
+
+    while True:
+        if value < currentNode.value:
+            if currentNode.left is None:
+                currentNode.left = BST(value)
+                break
+            else:
+                currentNode = currentNode.left
+        else:
+            if currentNode.right is None:
+                currentNode.right = BST(value)
+                break
+            else:
+                currentNode = currentNode.right
+    return self
 ```
 
-When adding a value to a heap , we append the value to the end of the heap array and then call the siftUp() to work on the last index in the array to ensure the min-heap property is maintained: `len(self.heap) - 1`.
+`self` - enables the use of class attributes <br>
+`value` - the value we are inserting <br>
 
-### 7. buildHeap()
+When inserting in a BST, we start at the root node and traverse down the tree iteratively checking if the value is less than or greater than the current node's value. This will guide us to the correct placement. This is why we have the `while True` condition.<br>
+
+the insert() function essentially traverses from the root to a leaf, comparing the value of each node along the way to ensure the BST condition is maintained.(return self is added for the AlgoExpert.com and not needed for the solution)
+
+### 1. remove()
 
 ```py
-# O(n) Time |  O(1) Space
-def buildHeap(self, array):
-    firstParentIdx = (len(array) - 2) // 2
-    for currentIdx in reversed(range(firstParentIdx + 1)):
-        self.siftDown(currentIdx, len(array) - 1, array)
-    return array
+def remove(self, value, parentNode=None):
+    currentNode = self
+
+    while currentNode is not None:
+        if value < currentNode.value:
+            parentNode = currentNode
+            currentNode = currentNode.left
+        elif value > currentNode.value:
+            parentNode = currentNode
+            currentNode = currentNode.right
+        else:
+            # when the node has 2 children
+            if currentNode.left is not None and currentNode.right is not None:
+                currentNode.value = currentNode.right.getMinValue()
+                currentNode.right.remove(currentNode.value, currentNode)
+            # when node is the root node
+            elif parentNode is None:
+                if currentNode.left is not None:
+                    self.value = currentNode.left.value
+                    self.right = currentNode.left.right
+                    self.left = currentNode.left.left
+                elif currentNode.right is not None:
+                    self.value = currentNode.right.value
+                    self.left = currentNode.right.left
+                    self.right = currentNode.right.right
+                # for only one value in the tree
+                else:
+                    return None
+            # when the node has 1 children
+            elif parentNode.left == currentNode:
+                parentNode.left = currentNode.left if currentNode.left is not None else currentNode.right
+            elif parentNode.right == currentNode:
+                parentNode.right = currentNode.left if currentNode.left is not None else currentNode.right
+            break
+    return self
 ```
 
-This buildHeap function takes in an array and converts it into a min-heap. It starts by calculating the index of the first parent in the heap(which would be located at the bottom of the heap). Remember the function to find a parrent: `parentIdx = (childIdx - 1) // 2` since we are trying to find the parent of the index "`len(self.heap) - 1`", the algorithm looks like this:
+`self` - enables the use of class attributes <br>
+`value` - the value to be removed <br>
+`parentNode` - keeps track of the parent of the **currentNode** for reconnecting the subtree of the removed node <br>
+
+The loop runs until **the current node matches the target value** or **we have reached a leaf**. <br>
 
 ```py
-firstParentIdx = (len(self.heap) - 1 - 1) // 2 # Which is equivalent to..
-firstParentIdx = (len(self.heap) - 2) // 2
+        self.right = currentNode.right.right
+    # for only one value in the tree
+    else:
+        return None # <------
+# when the node has 1 children
+elif parentNode.left == currentNode:
+    parentNode.left = currentNode.left if currentNode.left is not None
 ```
-
-Then, continuing from that first parent index, it iterates through the array in reverse order and calls siftDown on each parent index to ensure the min-heap property is maintained as we build the heap from an unsorted array.<br>
-
-Finally, we return the heap array.
 
 ```py
-return array
+while currentNode is not None: # <------
 ```
 
-And we're **Done**!
+The first thing we do is create a variable that will keep track of the current node as we iterate though the BST(`currentNode = self`). Then we implent if statements similar to contains(). If the value is less than current node's value we go left, if greater we go right.
 
-Note that building the heap with the `siftUp()` method would be less efficient than the `siftDown()` method. This is because heaps are "bottom heavy", and traversing from one end to the other end of this data structure is O(logn) time. Therefore, sifting down is more effiicient because there are less nodes to sift from at the top for the `siftDown()` method, in contrast to `siftUp()` which has more nodes to sift at the bottom. <br>
+```py
+while currentNode is not None:
+    if value < currentNode.value:
+        parentNode = currentNode
+        currentNode = currentNode.left
+    elif value > currentNode.value:
+        parentNode = currentNode
+        currentNode = currentNode.right
+...
+```
 
-Implementing a _mathmatical taylor series_ would result in the `siftDown()` approach having **O(n)** Time complexity while the `shiftUp()` approach would have **O(nlogn)** time complexity.
+Now, if we have found the value- there are 3 cases to handle:
+
+- when the node has 2 children<br>
+- when node when node is the root node<br>
+- when the node has 1 children<br>
+
+1. If currentNode has two children:<br>
+   We replace its value with the minimum value in its right subtree
+
+```py
+currentNode.value = currentNode.right.getMinValue()
+```
+
+and remove that minimum node from the right subtree
+
+```py
+currentNode.right.remove(currentNode.value, currentNode)
+```
+
+2. If currentNode is the root node:<br>
+
+We first check if the root has a left child, if so we replace that root with its left child. If it has no left child we replace it with its right child.
+
+```py
+elif parentNode is None:
+    if currentNode.left is not None:
+        self.value = currentNode.left.value
+        self.right = currentNode.left.right
+        self.left = currentNode.left.left
+    elif currentNode.right is not None:
+        self.value = currentNode.right.value
+        self.left = currentNode.right.left
+        self.right = currentNode.right.right
+    # for only one value in the tree
+    else:
+        return
+```
+
+There is an edge case where both left and right are none. This means there is only one node in the tree. In that case we return to indicate removal was successful.
+
+3. If currentNode has 1 child:<br>
+
+We determine if the current node is a left or right node of its parent. After this we set that **parent's.NEWCHILD** to the `currentNode.left` node if it has one, if not then we set it to the `currentNode.right`. <br>
+
+Note that both of these solutions are equivalent:
+
+```py
+parentNode.left = currentNode.right if currentNode.right is not None else currentNode.left
+parentNode.right = currentNode.left if currentNode.left is not None else currentNode.right
+```

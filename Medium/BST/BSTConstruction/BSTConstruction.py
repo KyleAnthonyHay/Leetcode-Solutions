@@ -13,7 +13,6 @@ class BST:
     # O(logn) time AVG | O(1) Space
     def insert(self, value):
         currentNode = self
-
         while True:
             if value < currentNode.value:
                 if currentNode.left is None:
@@ -68,7 +67,7 @@ class BST:
                         self.right = currentNode.right.right
                     # for only one value in the tree
                     else:
-                        return None
+                        return
                 # when the node has 1 children
                 elif parentNode.left == currentNode:
                     parentNode.left = currentNode.left if currentNode.left is not None else currentNode.right
