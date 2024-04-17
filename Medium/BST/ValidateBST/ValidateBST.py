@@ -8,13 +8,9 @@ class BST:
         self.right = None
 
 
-def validateBst(tree):
-    if tree == None:
+def validateBst(tree, min_val=float('-inf'), max_val=float('inf')):
+    if tree is None:
         return True
-
-    if tree.left is not None and tree.left.value >= tree.value:
+    if not (min_val <= tree.value < max_val):
         return False
-    if tree.right is not None and tree.right.value < tree.value:
-        return False
-
-    return validateBst(tree.left) and validateBst(tree.right)
+    return validateBst(tree.left, min_val, tree.value) and validateBst(tree.right, tree.value, max_val)
