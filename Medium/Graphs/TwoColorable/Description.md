@@ -6,109 +6,70 @@
 
 ## Solution
 ```py
-def cycleInGraph(edges):
-    numberOfNodes = len(edges)
-    visited = [False for _ in range(numberOfNodes)]
-    currentlyInStack = [False for _ in range(numberOfNodes)]
+def twoColorable(edges):
+    colors = [None for _ in edges]
+    colors[0] = True
+    stack = [0]
 
-    for node in range(numberOfNodes):
-        if visited[node]:
-            continue
-            
-        containsCycle = isNodeInCycle(edges, node, visited, currentlyInStack)
-        if containsCycle:
-            return True
-            
-    return False
-
-def isNodeInCycle(edges, node, visited, currentlyInStack):
-    visited[node] = True
-    currentlyInStack[node] = True
-    neighbors = edges[node]
-    
-    for neighbor in neighbors:
-        if not visited[neighbor]:
-            containsCycle = isNodeInCycle(edges, neighbor, visited, currentlyInStack)
-            if containsCycle:
-                return True
-        elif currentlyInStack[neighbor]:
-            return True
-
-    currentlyInStack[node] = False
-    return False
+    while len(stack) > 0:
+        node = stack.pop()
+        for connection in edges[node]:
+            if colors[connection] is None:
+                colors[connection] = not colors[node]
+                stack.append(connection)
+            elif colors[connection] == colors[node]:
+                return False
+                
+    return True
 ```
 
 **Time Complexity:** O(V + E) **Width** * **Height** for visitng every index in the `matrix`<br/>
-**Space Complexity:** O(W * H) for creating a matrix of equal size in boolean values<br/>
+**Space Complexity:** O(V) for creating the `stack`<br/>
 
 ### Approach
 
-The idea is to keep track of every visited node, while we traverse the graph we perform the function isNodeInCycle() that performs a Depth-First-Search to see if we can find a cycle from that node. <br> 
+The idea is to check the list of edges(`connection`) at each `node`, and set its color to the opssoite color of our currently observed `node`. If at any point we find that the color of a edge(`connection`) has been previously changed to the same color as our node we can return False.<br> 
 
-Now, this function will likely checks several ndoes so we check if that node has been visited before we perform the DFS. Let's break down the steps:
+We know this because if a **neighboring node** has been previously changed to the same colour as the current node, that means that **neighnoring node** has a adjecent node with the opposoite color as our current node. So, if we change the color of that **neighnoring node**, we would break the condtion.<br>
+
+Let's break it down step by step.
 
 
-1. Determine the number of nodes that are in the graph by finding the legth of the edges array(each index of edges holds a list of edges for each node. ie edges[0] contains an array of edges for teh first node in the graph). <br>
-Then we create two arrays to determin if those nodes have been visited and if theu are currently on the stack.
+1. Create a colors array initialized with None, for every node in the graph. Also set the first node to True and put it on the stack.
+
+- True = Blue
+- False = Red
+- The stack is used to traverse the graph
 
 ```py
-numberOfNodes = len(edges)
-visited = [False for _ in range(numberOfNodes)]
-currentlyInStack = [False for _ in range(numberOfNodes)]
+def twoColorable(edges):
+    colors = [None for _ in edges]
+    colors[0] = True
+    stack = [0]
 ```
 
-2. for every node, we check of that node has been visited, if not we perform the isNodeInCycle/DFS on that node. IF the function returns true, we return True and end the loop. <br>
-(note that isNodeInCycle() marks nodes as visited in the visited array so that we do not perform unnecessary calculations)
+2. Now create a loop that checks the list of edges for each node. If the color of each connection has been not been changed we set it to the opposite of our currently observed node. We also add it to teh stack.
 
 ```py
-for node in range(numberOfNodes):
-    if visited[node]:
-        continue
-        
-    containsCycle = isNodeInCycle(edges, node, visited, currentlyInStack)
-    if containsCycle:
-        return True
-        
-return False
-```
-If we reach the end of the array without returning True we return false since there was no cycles in the graph.
-
-## isNodeInCycle(edges, node, visited, currentlyInStack)
-`edges` - the list of edges for each node <br>
-`node` - the current node we are performing DFS on<br>
-`visited` - the list of previously visited nodes(likely to be updated)<br>
-`currentlyInStack` - used to keep track of the stack for DFS<br>
-
-3. Immediately mark current `node` as visited, and place it on the stack. Also, store it's edges in variable `neighbors`
-
-```py
-def isNodeInCycle(edges, node, visited, currentlyInStack):
-    visited[node] = True
-    currentlyInStack[node] = True
-    neighbors = edges[node]
+while len(stack) > 0:
+    node = stack.pop() # select currently observed node
+    for connection in edges[node]:
+        if colors[connection] is None:
+            colors[connection] = not colors[node] # change to opposite color
+            stack.append(connection) # add to stack
 ```
 
-4. For every neighbor in the neighbors array, fi that neighbor has not been visited we call the recursuve function as our DFS operation. We also check if it ends up finding a cycle, if so we return True.
+3. If the color has been previosuly changed AND it is equal to our `node`, we return False since the condition was broken.
 
 ```py
-if not visited[neighbor]: # if node has been visited, do nothing
-    containsCycle = isNodeInCycle(edges, neighbor, visited, currentlyInStack)
-    if containsCycle: # did it find a cycle?
-        return True
-```
-
-5. if `neighbor` has been visited, we check if it's in the `currentlyInStack` variable: meaning it's on the stack and either the `node` passed in the function call or any of its neighbors. 
-
-To put it plainly, it means we visited the same node twice.
-```py
-        elif currentlyInStack[neighbor]:
-            return True
-```
-
-Now if we checked all the neighbours and found no cycles, we take the current node off of the stack and return False.
-
-```py
-    currentlyInStack[node] = False
+elif colors[connection] == colors[node]:
     return False
 ```
+
+Alternitavely, If we reach check every node and do not brea teh condition, we can then return True.
+
+```py
+return True
+```
+
 and we're **Done!**
